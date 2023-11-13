@@ -9,8 +9,8 @@ const school = [
     {
         title: "students",
         details: [
-            { name: "Max Hermann", branhc: "Fullstack" },
-            {name: "Anthony Egbe", branhc: "Cloud"}
+            { name: "Max Hermann", branhc: "Fullstack", average_grade: 5.4 },
+            { name: "Anthony Egbe", branhc: "Cloud", average_grade: 4.9 }
         ]
     },
     {
