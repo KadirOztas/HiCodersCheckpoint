@@ -1,0 +1,9 @@
+body {
+    margin: 0px;
+    font-family: "segoe ui";
+}
+.nav{
+    background-color: #F8F9FA;
+    height: 50px;
+    width: 100%;
+}
