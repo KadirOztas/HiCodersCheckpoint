@@ -24,3 +24,4 @@ const school = [
 // I need to make a commit about id situation too.
 
 import { renderNav } from "./nav.js";
+import { renderFooter } from "./footer.js";
