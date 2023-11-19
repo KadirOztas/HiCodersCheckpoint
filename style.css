@@ -2,12 +2,17 @@ body {
     margin: 0px;
     font-family: "segoe ui";
 }
-.nav{
+#nav-div{
     background-color: #F8F9FA;
     height: 50px;
     width: 100%;
+    align-items: center;
+    display: flex;
 }
-.footer{
+#nav-div button{
+    margin: 10px;
+}
+#footer{
     padding: 20px;
     background-color: #868E96;
     color: black;
@@ -18,6 +23,7 @@ body {
     left: 0;
     width: 100%;
 }
+
 #contact{
     padding-left: 30px;
 }
