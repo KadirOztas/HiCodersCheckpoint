@@ -1,4 +1,6 @@
+import { showStudents } from "./students.js";
 
+import { showStudents } from "./students.js";
 
 const renderNav = () => {
     const app = document.getElementById("app");
@@ -12,6 +14,5 @@ const renderNav = () => {
     <button id="students">Students</button>
     `;
 }
-
 renderNav()
 export{renderNav}
