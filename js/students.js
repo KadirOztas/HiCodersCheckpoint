@@ -33,3 +33,4 @@ function renderStudents() {
 
   `;
 }
+export{renderStudents}

@@ -25,6 +25,8 @@ function renderTeachers() {
       </div>`
   }
   )
+  content += `</div>`;
+
   dynamicContent.innerHTML=content
 }
 export{renderTeachers}
