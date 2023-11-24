@@ -26,6 +26,8 @@ const renderNav = () => {
     </div>
   </div>
 </nav>
+<div id="dynamic-content"></div>
+// That is for dynamic content
     `;
 }
 export{renderNav}
