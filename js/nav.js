@@ -1,9 +1,7 @@
 const renderNav = () => {
     const app = document.getElementById("app");
-    const navDiv = document.createElement("div")
-    app.appendChild(navDiv);
-    navDiv.id="nav-div"
-    navDiv.innerHTML += `
+    app.innerHTML = "";
+    app.innerHTML += `
       <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">LMS</a>
