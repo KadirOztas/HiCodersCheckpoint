@@ -2,6 +2,8 @@ import { renderNav } from "./nav.js";
 import { renderStudents } from "./students.js";
 import { renderTeachers } from "./teachers.js";
 import { renderClasses } from "./classes.js";
+window.renderStudents = renderStudents;
+window.renderClasses = renderClasses;
 
 renderNav();
 renderStudents();
