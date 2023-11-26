@@ -9,11 +9,11 @@ const teachers = [
 ];
 function renderTeachers() {
   const dynamicContent = document.getElementById("dynamic-content")
-  // Just fot test i am gonna clean the content
+  // Clean up content for testing
   dynamicContent.innerHTML = ""
-  let teacherContent = `<h1>${teachers[0].title}h1><div class="teacher-header"`;
+  let teacherContent = `<h1>${teachers[0].title}</h1><div class="teacher-header">`;
   teachers[0].details.forEach((teacher) => {
-    content += `
+    teacherContent += `
     <div class="card" style="width: 18rem;">
         <div class="card-body">
           <h5 class="card-title">${teacher.name}</h5>
@@ -25,8 +25,8 @@ function renderTeachers() {
       </div>`
   }
   )
-  content += `</div>`;
+  teacherContent += `</div>`;
 
-  dynamicContent.innerHTML=content
+  dynamicContent.innerHTML=teacherContent
 }
 export{renderTeachers}
