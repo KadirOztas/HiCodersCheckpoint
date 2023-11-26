@@ -1,4 +1,3 @@
-// students.js
 const students = [
   {
     title: "Students",
@@ -11,20 +10,28 @@ const students = [
 
 function renderStudents() {
   const dynamicContent = document.getElementById("dynamic-content");
-  dynamicContent.innerHTML = ""; // Clear existing content
+  dynamicContent.innerHTML = `<p class="students-header">${students[0].title}</p>`;
 
-  // Create the student cards
   students[0].details.forEach((student) => {
     const studentCard = `
       <div class="card" style="width: 18rem;">
         <div class="card-body">
           <h5 class="card-title">${student.name}</h5>
-          <p class="card-text">Details about ${student.branch} specialization.</p>
+          <h6 class="card-subtitle mb-2 text-muted">${student.branch}</h6>
+          <p class="card-text">
+            Some quick example text to build on the card title and make up the bulk of
+            the card's content.
+          </p>
+           <p class="average-text">
+            ${student.average_grade}
+          </p>
         </div>
-      </div>
-    `;
-    dynamicContent.innerHTML += studentCard; // Add the card to dynamicContent
+      </div>`;
+    dynamicContent.innerHTML += studentCard;
   });
 }
-
 export { renderStudents };
+
+
+
+
