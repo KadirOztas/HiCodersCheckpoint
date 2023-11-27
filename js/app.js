@@ -2,33 +2,35 @@ import { renderNav } from "./nav.js";
 import { renderStudents } from "./students.js";
 import { renderTeachers } from "./teachers.js";
 import { renderClasses } from "./classes.js";
-window.renderStudents = renderStudents;
-window.renderClasses = renderClasses;
+import { renderHome } from "./home.js";
 
 renderNav();
-renderStudents();
-renderTeachers();
+window.renderStudents = renderStudents;
+window.renderTeachers = renderTeachers;
+window.renderClasses = renderClasses;
+window.renderHome = renderHome;
 
-// Event listener functions:
 const navClickListeners = () => {
+   document.getElementById("home-link").addEventListener("click", (event) => {
+     event.preventDefault();
+     window.renderHome();
+   });
   document
     .getElementById("students-page")
-    .addEventListener("click", function (event) {
+    .addEventListener("click", (event) => {
       event.preventDefault();
       renderStudents();
     });
   document
     .getElementById("teachers-page")
-    .addEventListener("click", function (event) {
+    .addEventListener("click", (event) => {
       event.preventDefault();
       renderTeachers();
     });
-  document
-    .getElementById("classes-link")
-    .addEventListener("click", function (event) {
-      event.preventDefault();
-      renderClasses();
-    });
+  document.getElementById("classes-link").addEventListener("click", (event) => {
+    event.preventDefault();
+    renderClasses();
+  });
 };
 
-navClickListeners();
+document.addEventListener("DOMContentLoaded", navClickListeners);

@@ -30,8 +30,4 @@ function renderStudents() {
     dynamicContent.innerHTML += studentCard;
   });
 }
-export { renderStudents };
-
-
-
-
+export { students, renderStudents };

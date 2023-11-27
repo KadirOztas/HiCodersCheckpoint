@@ -28,4 +28,4 @@ function renderTeachers() {
 
   dynamicContent.innerHTML = teacherContent;
 }
-export { renderTeachers };
+export { teachers,renderTeachers };
