@@ -1,7 +1,13 @@
   const classes = [
     {
       title: "Classes",
-      details: [{ class: "Fullstack" }, { class: "Cloud" }],
+      details: [
+        { class: "Fullstack" },
+        { class: "Cloud" },
+        { class: "AWS" },
+        { class: "Javascript" },
+        { class: "Java" },
+      ],
     },
   ];
 

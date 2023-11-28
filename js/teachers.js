@@ -4,6 +4,9 @@ const teachers = [
     details: [
       { name: "Hannes Bühler", expertise: "Javascript" },
       { name: "Ali Sayar", expertise: "AWS" },
+      { name: "Cristian Monedero", expertise: "Cloud" },
+      { name: "Léonce Blanchet", expertise: "Fullstack" },
+      { name: "Giuseppina Lori", expertise: "Java" },
     ],
   },
 ];

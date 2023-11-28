@@ -1,15 +1,19 @@
 const renderFooter = () => {
-    const app = document.getElementById("app");
-    const footerDiv = document.createElement("div")
-    app.appendChild(footerDiv)
-    footerDiv.innerHTML += `
-    <div id= "footer">
-    <span id="about us">About Us</span>
-    <span id="contact">Contact</span>
+  const app = document.getElementById("app");
+  const footerDiv = document.createElement("footer");
+  footerDiv.classList.add("footer", "bg-secondary", "py-3");
+
+  footerDiv.innerHTML = `
+    <div class="container">
+      <div class="row">
+        <div class="col d-flex">
+          <a href="#!" class="nav-link text-dark">About us</a>
+          <a href="#!" class="nav-link text-dark">Contact</a>
+        </div>
+      </div>
     </div>
+  `;
+  app.appendChild(footerDiv);
+};
 
-    `;
-}
-
-renderFooter()
-export{renderFooter}
+export { renderFooter };
