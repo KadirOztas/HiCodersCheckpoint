@@ -1,7 +1,16 @@
+.text-container {
+  border-top: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+  position: fixed;
+  bottom: 50px;
+  left: 0;
+  width: 100%;
+}
+
 .footer {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: #858D95;
-  padding: 10px 0; 
+  padding: 10px 0;
+  z-index: 1030;
 }
