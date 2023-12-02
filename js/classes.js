@@ -1,5 +1,5 @@
 import { teachers } from "./teachers.js";
-const classes = [
+const classes = JSON.parse(localStorage.getItem("classes")) || [
   {
     title: "Classes",
     details: [
@@ -48,26 +48,24 @@ function renderClasses() {
 
   htmlContent += `</div>`;
   htmlContent += `<div class="d-flex flex-column align-items-center">
-  <button type="button" id="add-class-button" class="btn btn-light btn-lg" data-bs-toggle="modal" data-bs-target="#addClassModal">
-    <i class="bi bi-plus-circle"></i>
-  </button>
-  <p>Add new ${classes[0].title}</p>
-</div>`;
+    <button type="button" id="add-class-button" class="btn btn-light btn-lg">
+      <i class="bi bi-plus-circle"></i> Add new ${classes[0].title}
+    </button>
+  </div>`;
   htmlContent += `</div>`;
   dynamicContent.innerHTML = htmlContent;
 }
 function addNewClass(className) {
   const teacherIndex = classes[0].details.length % teachers[0].details.length;
   const teacher = teachers[0].details[teacherIndex].name;
-  classes[0].details.push({
-    class: className,
-    teacher: teacher,
-  });
+  classes[0].details.push({ class: className, teacher: teacher });
+  localStorage.setItem("classes", JSON.stringify(classes));
   renderClasses();
 }
+
 document.addEventListener("DOMContentLoaded", () => {
   renderClasses();
-  const addButton = document.querySelector("#add-class-button");
+  const addButton = document.getElementById("add-class-button");
   if (addButton) {
     addButton.addEventListener("click", () => {
       const className = prompt("Please enter the new class name:");

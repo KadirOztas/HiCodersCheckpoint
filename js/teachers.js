@@ -1,4 +1,4 @@
-const teachers = [
+const teachers = JSON.parse(localStorage.getItem("teachers")) || [
   {
     title: "Teachers",
     details: [
@@ -13,7 +13,6 @@ const teachers = [
 
 function renderTeachers() {
   const dynamicContent = document.getElementById("dynamic-content");
-  // Clean up content for testing
   let htmlContent = `<div class="fluid-container">`;
   let teacherHeader = `<div class="row m-4">
     <div class="col-xl-10">
@@ -37,12 +36,35 @@ function renderTeachers() {
     htmlContent += teacherContent;
   });
   htmlContent += `</div>`;
-  htmlContent += `<button type="button" id="add-teacher-button" class="btn btn-light btn-lg" data-bs-toggle="modal" data-bs-target="#addClassModal">
-  <i class="bi bi-plus-circle"></i>
-</button>
-<p>Add new ${teachers[0].title}</p>`;
+  htmlContent += `
+    <div class="d-flex flex-column align-items-center">
+      <button type="button" id="add-teacher-button" class="btn btn-light btn-lg">
+        <i class="bi bi-plus-circle"></i> Add new Teacher
+      </button>
+    </div>`;
   htmlContent += `</div>`;
   dynamicContent.innerHTML = htmlContent;
+  const addTeacherButton = document.getElementById("add-teacher-button");
+  if (addTeacherButton) {
+    addTeacherButton.addEventListener("click", () => {
+      const name = prompt("Please enter the new teacher's name:");
+      const expertise = prompt("Please enter the teacher's expertise:");
+      if (name && expertise) {
+        addNewTeacher(name, expertise);
+      }
+    });
+  }
 }
+
+function addNewTeacher(name, expertise) {
+  const newTeacher = { name, expertise };
+  teachers[0].details.push(newTeacher);
+  localStorage.setItem("teachers", JSON.stringify(teachers));
+  renderTeachers();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderTeachers();
+});
 
 export { teachers, renderTeachers };
