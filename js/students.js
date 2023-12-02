@@ -31,7 +31,7 @@ const students = [
 function renderStudents() {
   const dynamicContent = document.getElementById("dynamic-content");
   dynamicContent.innerHTML = `<h4 id="students-header">${students[0].title}</h4>`;
-  students[0].details.slice(0, 2).forEach((student) => {
+  students[0].details.forEach((student) => {
     const studentCard = `
       <div class="card" style="width: 18rem;">
         <div class="card-body">

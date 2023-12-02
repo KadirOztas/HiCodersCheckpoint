@@ -7,6 +7,7 @@ import { renderFooter } from "./footer.js";
 
 renderNav();
 renderFooter();
+renderHome()
 window.renderStudents = renderStudents;
 window.renderStudents = renderStudents;
 window.renderTeachers = renderTeachers;
