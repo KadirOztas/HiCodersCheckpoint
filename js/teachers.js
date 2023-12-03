@@ -1,16 +1,4 @@
-const teachers = JSON.parse(localStorage.getItem("teachers")) || [
-  {
-    title: "Teachers",
-    details: [
-      { name: "Hannes Bühler", expertise: "Fullstack" },
-      { name: "Ali Sayar", expertise: "Cloud" },
-      { name: "Cristian Monedero", expertise: "AWS" },
-      { name: "Léonce Blanchet", expertise: "Javascript" },
-      { name: "Giuseppina Lori", expertise: "Java" },
-    ],
-  },
-];
-
+import { teachers } from "./data.js";
 function renderTeachers() {
   const dynamicContent = document.getElementById("dynamic-content");
   let htmlContent = `<div class="fluid-container">`;
@@ -23,7 +11,7 @@ function renderTeachers() {
   htmlContent += `<div class="row px-5 d-flex justify-content-center align-item-center">`;
   teachers[0].details.forEach((teacher) => {
     let teacherContent = `
-      <div class="card" style="width: 18rem;">
+      <div class="card col-xl-5 m-2" style="width: 18rem;">
         <div class="card-body">
           <h5 class="card-title">${teacher.name}</h5>
           <h6 class="card-subtitle mb-2 text-muted">${teacher.expertise} Expertise</h6>
@@ -55,16 +43,13 @@ function renderTeachers() {
     });
   }
 }
-
 function addNewTeacher(name, expertise) {
   const newTeacher = { name, expertise };
   teachers[0].details.push(newTeacher);
   localStorage.setItem("teachers", JSON.stringify(teachers));
   renderTeachers();
 }
-
 document.addEventListener("DOMContentLoaded", () => {
   renderTeachers();
 });
-
 export { teachers, renderTeachers };
