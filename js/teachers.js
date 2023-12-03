@@ -1,4 +1,5 @@
 import { teachers } from "./data.js";
+import { addModal } from "./modal.js";
 function renderTeachers() {
   const dynamicContent = document.getElementById("dynamic-content");
   let htmlContent = `<div class="fluid-container">`;
@@ -35,19 +36,66 @@ function renderTeachers() {
   const addTeacherButton = document.getElementById("add-teacher-button");
   if (addTeacherButton) {
     addTeacherButton.addEventListener("click", () => {
-      const name = prompt("Please enter the new teacher's name:");
-      const expertise = prompt("Please enter the teacher's expertise:");
-      if (name && expertise) {
-        addNewTeacher(name, expertise);
-      }
+      promptWithModal("Add New Teacher", (data) => {
+        if (data) {
+          const [name, expertise] = data;
+          addNewTeacher(name, expertise);
+        }
+      });
     });
   }
 }
 function addNewTeacher(name, expertise) {
-  const newTeacher = { name, expertise };
-  teachers[0].details.push(newTeacher);
-  localStorage.setItem("teachers", JSON.stringify(teachers));
-  renderTeachers();
+  const isExpertiseExists = teachers[0].details.some(
+    (teacher) => teacher.expertise === expertise
+  );
+
+  if (isExpertiseExists) {
+    addModal(
+      "Expertise Already Exists",
+      `The expertise "${expertise}" already exists. Do you want to try again?`,
+      () => {
+        promptWithModal("Add New Teacher", (data) => {
+          if (data) {
+            const [name, expertise] = data;
+            addNewTeacher(name, expertise);
+          }
+        });
+      },
+      null
+    );
+  } else {
+    const newTeacher = { name, expertise };
+    teachers[0].details.push(newTeacher);
+    localStorage.setItem("teachers", JSON.stringify(teachers));
+    renderTeachers();
+  }
+}
+function promptWithModal(title, callbackOnConfirm) {
+  const modalBody = `
+    <div class="mb-3">
+      <label for="teacher-name" class="form-label">Name and Surname</label>
+      <input type="text" id="teacher-name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label for="teacher-expertise" class="form-label">Expertise</label>
+      <input type="text" id="teacher-expertise" class="form-control" required>
+    </div>
+  `;
+  addModal(
+    title,
+    modalBody,
+    () => {
+      const name = document.getElementById("teacher-name").value.trim();
+      const expertise = document
+        .getElementById("teacher-expertise")
+        .value.trim();
+      if (name && expertise) {
+        callbackOnConfirm([name, expertise]);
+      }
+    },
+    () => {}
+  );
 }
 document.addEventListener("DOMContentLoaded", () => {
   renderTeachers();

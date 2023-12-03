@@ -21,11 +21,9 @@ function addModal(title, body, callbackOnConfirm, callbackOnClose) {
       </div>
     </div>
   `;
-
   document.body.insertAdjacentHTML("beforeend", modalHtml);
   const modalElement = document.getElementById(uniqueModalId);
   const modalInstance = new bootstrap.Modal(modalElement);
-
   const confirmButton = document.getElementById(
     `${uniqueModalId}-confirm-button`
   );
@@ -35,7 +33,6 @@ function addModal(title, body, callbackOnConfirm, callbackOnClose) {
     }
     modalInstance.hide();
   });
-
   modalElement.addEventListener("hidden.bs.modal", () => {
     modalElement.remove();
     if (typeof callbackOnClose === "function") {
@@ -45,5 +42,4 @@ function addModal(title, body, callbackOnConfirm, callbackOnClose) {
 
   modalInstance.show();
 }
-
 export { addModal };
