@@ -1,7 +1,5 @@
-import { students } from "./students.js";
-import { teachers } from "./teachers.js";
-import { classes } from "./classes.js";
-
+import {teachers, classes, students} from "./data.js"
+import { promptWithModal } from "./modal.js";
 function renderHome() {
   const dynamicContent = document.getElementById("dynamic-content");
   dynamicContent.innerHTML = `
@@ -39,6 +37,13 @@ function renderHome() {
     </div>
     </div>
   `;
+  function askUserName() {
+    promptWithModal("Enter Your Name", (userName) => {
+      renderHome(userName);
+    });
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    askUserName();
+  });
 }
-
 export { renderHome };

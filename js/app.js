@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
   renderTeachers();
   renderClasses();
   renderHome();
-
 });
 window.renderStudents = renderStudents;
 window.renderTeachers = renderTeachers;

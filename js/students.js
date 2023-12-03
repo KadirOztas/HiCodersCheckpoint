@@ -1,4 +1,5 @@
-import { students } from "./data.js";
+import { students, classes } from "./data.js";
+import { addModal, promptWithModal } from "./modal.js";
 function renderStudents() {
   const dynamicContent = document.getElementById("dynamic-content");
   let htmlContent = `<div class="fluid-container-student">`;
@@ -32,10 +33,6 @@ function renderStudents() {
   dynamicContent.innerHTML = htmlContent;
   attachAddStudentButtonListener();
 }
-document.addEventListener("DOMContentLoaded", () => {
-  renderStudents();
-  attachAddStudentButtonListener();
-});
 function addNewStudent(name, branch, average_grade) {
   const newStudent = { name, branch, average_grade };
   students[0].details.push(newStudent);
@@ -46,16 +43,21 @@ function attachAddStudentButtonListener() {
   const addStudentButton = document.getElementById("add-student-button");
   if (addStudentButton) {
     addStudentButton.addEventListener("click", () => {
-      const name = prompt("Please enter the new student's name:");
-      const branch = prompt("Please enter the student's branch:");
-      const average_grade = parseFloat(
-        prompt("Please enter the student's average grade:")
+      promptWithModal(
+        "Add New Student",
+        [
+          { id: "student-name", label: "Name", type: "text" },
+          { id: "student-branch", label: "Branch", type: "text" },
+          {
+            id: "student-average-grade",
+            label: "Average Grade",
+            type: "number",
+          },
+        ],
+        (name, branch, average_grade) => {
+          addNewStudent(name, branch, parseFloat(average_grade));
+        }
       );
-      if (name && branch && !isNaN(average_grade)) {
-        addNewStudent(name, branch, average_grade);
-      } else {
-        alert("Please enter valid student information.");
-      }
     });
   }
 }
@@ -63,4 +65,4 @@ document.addEventListener("DOMContentLoaded", () => {
   renderStudents();
   attachAddStudentButtonListener();
 });
-export { students, renderStudents };
+export { renderStudents };

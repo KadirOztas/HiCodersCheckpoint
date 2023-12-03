@@ -1,7 +1,5 @@
-import { teachers } from "./data.js";
-import { classes } from "./data.js";
-import { addModal } from "./modal.js";
-
+import { teachers, classes } from "./data.js";
+import { addModal, createCard, promptWithModal } from "./modal.js";
 function renderClasses() {
   const dynamicContent = document.getElementById("dynamic-content");
   dynamicContent.innerHTML = "";
@@ -10,28 +8,20 @@ function renderClasses() {
             <h4 id="classes-header">${classes[0].title}</h4>
         </div>
     </div>`;
-
   let htmlContent = `<div class="fluid-container">`;
   htmlContent += classesHeader;
-  htmlContent += `<div class="row px-5 d-flex justify-content-center align-item-center">`;
-
+  htmlContent += `<div class="row px-5 d-flex justify-content-center align-items-center">`;
   classes[0].details.forEach((pClass) => {
     const teacher = teachers[0].details.find(
       (t) => t.expertise === pClass.class
     );
-    htmlContent += `
-            <div class="card col-xl-5 m-2" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">${pClass.class} Class</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">${
-                      teacher ? teacher.name : "No teacher found"
-                    }</h6>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="card-link" onclick="window.renderStudents()">Students</a>
-                    <a href="#" class="card-link" onclick="window.renderTeachers()">Teachers</a>
-                </div>
-            </div>
-        `;
+    htmlContent += createCard(
+      `${pClass.class} Class`,
+      teacher ? teacher.name : "No teacher found",
+      "Some quick example text to build on the class title and make up the bulk of the class's content.",
+      `<a href="#" class="card-link card-link-students" onclick="window.renderStudents()">Students</a>`,
+      `<a href="#" class="card-link card-link-teachers" onclick="window.renderTeachers()">Teachers</a>`
+    );
   });
 
   htmlContent += `</div>`;
@@ -42,23 +32,20 @@ function renderClasses() {
         </button>
     </div>
   </div>`;
-
   dynamicContent.innerHTML = htmlContent;
   attachAddButtonListener();
 }
 function addNewClass(className) {
   const availableTeacher = findAvailableTeacher(className);
-
   if (!availableTeacher) {
     addModal(
       "No Teacher Available",
-      `There isn't any teacher available for the class ${className}.`,
+      `There isn't any teacher available for the class ${className}. Please add teacher first then try again`,
       null,
       renderClasses
     );
   } else {
     const existingClass = classes[0].details.find((c) => c.class === className);
-
     if (existingClass) {
       addModal(
         "Class Already Exists",
@@ -90,41 +77,44 @@ function findAvailableTeacher(className) {
 }
 function attachAddButtonListener() {
   const addButton = document.getElementById("add-class-button");
-  console.log("Add button:", addButton);
-
   if (addButton) {
     addButton.onclick = () => {
       if (teachers[0].details.length === 0) {
         addModal(
           "No Teacher",
-          `There isn't any teacher who has this ${teachers[0].details.expertise}`
+          `There isn't any teacher available for the class ${className}. Please add teacher first then try again.`,
+          null,
+          renderClasses
         );
       } else {
-        promptWithModal("Enter New Class Name", (className) => {
-          if (className) {
+        promptWithModal(
+          "Enter New Class Name",
+          [{ id: "class-name", label: "Class Name", type: "text" }],
+          (className) => {
             addNewClass(className);
           }
-        });
+        );
       }
     };
-    console.log("Event listener attached to add button");
-  } else {
-    console.error("Add button not found");
   }
 }
-function promptWithModal(title, callbackOnConfirm) {
-  const modalBody = `<input type="text" id="modal-input" class="form-control" placeholder="${title}">`;
-  addModal(
-    title,
-    modalBody,
-    () => {
-      const inputValue = document.getElementById("modal-input").value;
-      if (inputValue.trim()) {
-        callbackOnConfirm(inputValue.trim());
-      }
-    },
-    () => {}
-  );
+function attachLinkEventListeners() {
+  const studentLinks = document.querySelectorAll(".card-link-students");
+  studentLinks.forEach((link) => {
+    link.addEventListener("click", function () {
+      document.getElementById("students-page").click();
+    });
+  });
+  const classLinks = document.querySelectorAll(".card-link-teachers");
+  classLinks.forEach((link) => {
+    link.addEventListener("click", function () {
+      document.getElementById("classes-link").click();
+    });
+  });
 }
-document.addEventListener("DOMContentLoaded", renderClasses);
-export { classes, renderClasses };
+document.addEventListener("DOMContentLoaded", () => {
+  renderClasses();
+  attachLinkEventListeners();
+  attachAddButtonListener();
+});
+export { renderClasses };
