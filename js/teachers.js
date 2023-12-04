@@ -1,6 +1,5 @@
 import { teachers } from "./data.js";
-import { addModal, createCard, promptWithModal } from "./modal.js";
-
+import { addModal, createCard, promptWithModal, deleteItem } from "./modal.js";
 function renderTeachers() {
   const dynamicContent = document.getElementById("dynamic-content");
   let htmlContent = `<div class="fluid-container">`;
@@ -11,13 +10,13 @@ function renderTeachers() {
   </div>`;
   htmlContent += teacherHeader;
   htmlContent += `<div class="row d-flex justify-content-center align-items-center">`;
-teachers[0].details.forEach((teacher) => {
+teachers[0].details.forEach((teacher, index) => {
   htmlContent += createCard(
     teacher.name,
     `${teacher.expertise} Expertise`,
-    "Some quick example text to build on the card title and make up the bulk of the card's content.",
     `<a href="#" class="card-link" onclick="window.renderStudents()">Students</a>`,
-    `<a href="#" class="card-link" onclick="window.renderClasses()">Classes</a>`
+    `<a href="#" class="card-link" onclick="window.renderClasses()">Classes</a>`,
+    index
   );
 });
   htmlContent += `</div></div>`;
@@ -29,7 +28,8 @@ teachers[0].details.forEach((teacher) => {
     </div>`;
   htmlContent += `</div>`;
   dynamicContent.innerHTML = htmlContent;
- attachAddTeacherButtonListener()
+  attachAddTeacherButtonListener()
+  deleteButon()
 }
 function addNewTeacher(name, expertise) {
   const isExpertiseExists = teachers[0].details.some(
@@ -89,6 +89,13 @@ function attachLinkEventListeners() {
   classLinks.forEach((link) => {
     link.addEventListener("click", function () {
       document.getElementById("classes-link").click();
+    });
+  });
+}
+function deleteButon() {
+  document.querySelectorAll(".delete-btn").forEach((button, index) => {
+    button.addEventListener("click", function () {
+      deleteItem(index, teachers[0].details, renderTeachers, "teachers");
     });
   });
 }

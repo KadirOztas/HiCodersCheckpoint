@@ -1,5 +1,5 @@
-import { students, classes } from "./data.js";
-import { addModal, promptWithModal } from "./modal.js";
+import { students } from "./data.js";
+import { promptWithModal, StudentCard, deleteItem } from "./modal.js";
 function renderStudents() {
   const dynamicContent = document.getElementById("dynamic-content");
   let htmlContent = `<div class="fluid-container-student">`;
@@ -12,17 +12,14 @@ function renderStudents() {
     `;
   htmlContent += studentsHeader;
   htmlContent += `<div class="row px-5 d-flex justify-content-center align-items-center">`;
-  students[0].details.forEach((student) => {
-    htmlContent += `
-      <div class="card col-xl-5 m-2" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">${student.name}</h5>
-          <h6 class="card-subtitle mb-2 text-muted">${student.branch}</h6>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <p class="average-text">${student.average_grade}</p>
-        </div>
-      </div>`;
-  });
+  students[0].details.forEach((student, index) => {
+    htmlContent += StudentCard(
+      student.name,
+      `${student.branch}`,
+      `<p class="card-text">Average Grade: ${student.average_grade}</p>`,
+      index
+    );
+  })
   htmlContent += `</div>
     <div class="d-flex flex-column align-items-center">
       <button type="button" id="add-student-button" class="btn btn-light btn-lg">
@@ -32,6 +29,7 @@ function renderStudents() {
   </div>`;
   dynamicContent.innerHTML = htmlContent;
   attachAddStudentButtonListener();
+  deleteButon()
 }
 function addNewStudent(name, branch, average_grade) {
   const newStudent = { name, branch, average_grade };
@@ -60,6 +58,13 @@ function attachAddStudentButtonListener() {
       );
     });
   }
+}
+function deleteButon() {
+  document.querySelectorAll(".delete-btn").forEach((button, index) => {
+    button.addEventListener("click", function () {
+      deleteItem(index, students[0].details, renderStudents, "students");
+    });
+  });
 }
 document.addEventListener("DOMContentLoaded", () => {
   renderStudents();

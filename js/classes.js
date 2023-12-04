@@ -1,5 +1,5 @@
 import { teachers, classes } from "./data.js";
-import { addModal, createCard, promptWithModal } from "./modal.js";
+import { addModal, createCard, promptWithModal, editItem, deleteItem } from "./modal.js";
 function renderClasses() {
   const dynamicContent = document.getElementById("dynamic-content");
   dynamicContent.innerHTML = "";
@@ -11,19 +11,18 @@ function renderClasses() {
   let htmlContent = `<div class="fluid-container">`;
   htmlContent += classesHeader;
   htmlContent += `<div class="row px-5 d-flex justify-content-center align-items-center">`;
-  classes[0].details.forEach((pClass) => {
+  classes[0].details.forEach((pClass, index) => {
     const teacher = teachers[0].details.find(
       (t) => t.expertise === pClass.class
     );
     htmlContent += createCard(
       `${pClass.class} Class`,
       teacher ? teacher.name : "No teacher found",
-      "Some quick example text to build on the class title and make up the bulk of the class's content.",
       `<a href="#" class="card-link card-link-students" onclick="window.renderStudents()">Students</a>`,
-      `<a href="#" class="card-link card-link-teachers" onclick="window.renderTeachers()">Teachers</a>`
+      `<a href="#" class="card-link card-link-teachers" onclick="window.renderTeachers()">Teachers</a>`,
+      index
     );
   });
-
   htmlContent += `</div>`;
   htmlContent += `
     <div class="d-flex flex-column align-items-center">
@@ -34,6 +33,7 @@ function renderClasses() {
   </div>`;
   dynamicContent.innerHTML = htmlContent;
   attachAddButtonListener();
+deleteButon()
 }
 function addNewClass(className) {
   const availableTeacher = findAvailableTeacher(className);
@@ -111,10 +111,19 @@ function attachLinkEventListeners() {
       document.getElementById("classes-link").click();
     });
   });
+  
+}
+function deleteButon (){
+  document.querySelectorAll(".delete-btn").forEach((button) => {
+    button.addEventListener("click", function () {
+      const index = parseInt(this.getAttribute("data-index"));
+      deleteItem(index, classes[0].details, renderClasses);
+    });
+  });
 }
 document.addEventListener("DOMContentLoaded", () => {
-  renderClasses();
-  attachLinkEventListeners();
+    renderClasses();
+    attachLinkEventListeners();
   attachAddButtonListener();
 });
 export { renderClasses };
