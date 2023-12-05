@@ -1,4 +1,4 @@
-import {teachers, classes, students} from "./data.js"
+import { teachers, classes, students } from "./data.js";
 import { promptWithModal } from "./modal.js";
 function renderHome() {
   const dynamicContent = document.getElementById("dynamic-content");

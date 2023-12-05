@@ -1,5 +1,5 @@
 import { teachers, classes } from "./data.js";
-import { addModal, createCard, promptWithModal, editItem, deleteItem } from "./modal.js";
+import { addModal, createCard, promptWithModal, deleteItem } from "./modal.js";
 function renderClasses() {
   const dynamicContent = document.getElementById("dynamic-content");
   dynamicContent.innerHTML = "";
@@ -33,7 +33,7 @@ function renderClasses() {
   </div>`;
   dynamicContent.innerHTML = htmlContent;
   attachAddButtonListener();
-deleteButon()
+  deleteButon();
 }
 function addNewClass(className) {
   const availableTeacher = findAvailableTeacher(className);
@@ -111,9 +111,8 @@ function attachLinkEventListeners() {
       document.getElementById("classes-link").click();
     });
   });
-  
 }
-function deleteButon (){
+function deleteButon() {
   document.querySelectorAll(".delete-btn").forEach((button) => {
     button.addEventListener("click", function () {
       const index = parseInt(this.getAttribute("data-index"));
@@ -122,8 +121,8 @@ function deleteButon (){
   });
 }
 document.addEventListener("DOMContentLoaded", () => {
-    renderClasses();
-    attachLinkEventListeners();
+  renderClasses();
+  attachLinkEventListeners();
   attachAddButtonListener();
 });
 export { renderClasses };

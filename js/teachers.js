@@ -1,5 +1,10 @@
 import { teachers } from "./data.js";
 import { addModal, createCard, promptWithModal, deleteItem } from "./modal.js";
+import {
+  validateAndFormatNameSurname,
+  openModalWithValidation,
+  nameSurnameRegex,
+} from "./main.js";
 function renderTeachers() {
   const dynamicContent = document.getElementById("dynamic-content");
   let htmlContent = `<div class="fluid-container">`;
@@ -10,15 +15,15 @@ function renderTeachers() {
   </div>`;
   htmlContent += teacherHeader;
   htmlContent += `<div class="row d-flex justify-content-center align-items-center">`;
-teachers[0].details.forEach((teacher, index) => {
-  htmlContent += createCard(
-    teacher.name,
-    `${teacher.expertise} Expertise`,
-    `<a href="#" class="card-link" onclick="window.renderStudents()">Students</a>`,
-    `<a href="#" class="card-link" onclick="window.renderClasses()">Classes</a>`,
-    index
-  );
-});
+  teachers[0].details.forEach((teacher, index) => {
+    htmlContent += createCard(
+      teacher.name,
+      `${teacher.expertise} Expertise`,
+      `<a href="#" class="card-link" onclick="window.renderStudents()">Students</a>`,
+      `<a href="#" class="card-link" onclick="window.renderClasses()">Classes</a>`,
+      index
+    );
+  });
   htmlContent += `</div></div>`;
   htmlContent += `
     <div class="d-flex flex-column align-items-center">
@@ -28,14 +33,13 @@ teachers[0].details.forEach((teacher, index) => {
     </div>`;
   htmlContent += `</div>`;
   dynamicContent.innerHTML = htmlContent;
-  attachAddTeacherButtonListener()
-  deleteButon()
+  attachAddTeacherButtonListener();
+  deleteButon();
 }
 function addNewTeacher(name, expertise) {
   const isExpertiseExists = teachers[0].details.some(
     (teacher) => teacher.expertise === expertise
   );
-
   if (isExpertiseExists) {
     addModal(
       "Expertise Already Exists",
@@ -61,31 +65,53 @@ function addNewTeacher(name, expertise) {
     renderTeachers();
   }
 }
+function openAddTeacherModal() {
+  openModalWithValidation(
+    "Add New Teacher",
+    [
+      { id: "teacher-name", label: "Name", type: "text" },
+      { id: "teacher-expertise", label: "Expertise", type: "text" },
+    ],
+    (name, expertise) => {
+      const validatedName = validateAndFormatNameSurname(name, "");
+      if (validatedName && nameSurnameRegex.test(expertise)) {
+        addNewTeacher(validatedName.name, expertise);
+      } else {
+        const errorMessage = !validatedName
+          ? "Name must be in 'John Doe' format and cannot contain numbers."
+          : "Expertise must only contain letters and spaces.";
+        addModal("Invalid Input", errorMessage, openAddTeacherModal);
+      }
+    },
+    [
+      {
+        field: "teacher-name",
+        regex: nameSurnameRegex,
+        errorMessage:
+          "Name must be in 'John Doe' format and cannot contain numbers.",
+      },
+      {
+        field: "teacher-expertise",
+        regex: nameSurnameRegex,
+        errorMessage: "Expertise must only contain letters",
+      },
+    ]
+  );
+}
 function attachAddTeacherButtonListener() {
   const addTeacherButton = document.getElementById("add-teacher-button");
   if (addTeacherButton) {
-    addTeacherButton.addEventListener("click", () => {
-      promptWithModal(
-        "Add New Teacher",
-        [
-          { id: "teacher-name", label: "Name", type: "text" },
-          { id: "teacher-expertise", label: "Expertise", type: "text" },
-        ],
-        (name, expertise) => {
-          addNewTeacher(name, expertise);
-        }
-      );
-    });
+    addTeacherButton.addEventListener("click", openAddTeacherModal);
   }
 }
 function attachLinkEventListeners() {
-  const studentLinks = document.querySelectorAll(".card-link-students"); 
+  const studentLinks = document.querySelectorAll(".card-link-students");
   studentLinks.forEach((link) => {
     link.addEventListener("click", function () {
       document.getElementById("students-page").click();
     });
   });
-  const classLinks = document.querySelectorAll(".card-link-classes"); 
+  const classLinks = document.querySelectorAll(".card-link-classes");
   classLinks.forEach((link) => {
     link.addEventListener("click", function () {
       document.getElementById("classes-link").click();
@@ -104,4 +130,4 @@ document.addEventListener("DOMContentLoaded", () => {
   attachLinkEventListeners();
   attachAddTeacherButtonListener();
 });
-export {renderTeachers };
+export { renderTeachers };
