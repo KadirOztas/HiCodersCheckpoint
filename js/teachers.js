@@ -62,7 +62,12 @@ function addNewTeacher(name, expertise) {
     const newTeacher = { name, expertise };
     teachers[0].details.push(newTeacher);
     localStorage.setItem("teachers", JSON.stringify(teachers));
-    renderTeachers();
+    addModal(
+      "Teacher Added",
+      `New teacher ${name} with expertise ${expertise} added successfully.`,
+      null,
+      renderTeachers
+    );
   }
 }
 function openAddTeacherModal() {

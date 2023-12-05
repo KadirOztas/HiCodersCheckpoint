@@ -1,7 +1,10 @@
 import { addModal, promptWithModal } from "./modal.js";
 
 const nameSurnameRegex = /^[A-Za-z\s]+$/;
-
+const examValidation = {
+  regex: /^[0-6](?:\.[0-9])?$/,
+  errorMessage: "Exam score must be between 0 and 6",
+};
 function validateAndFormatNameSurname(name, surname) {
   const formatName = (str) =>
     str
@@ -55,9 +58,15 @@ function openModalWithValidation(
     }
   });
 }
+function isExamScoreValid(score) {
+  const examScore = parseFloat(score);
+  return !isNaN(examScore) && examScore >= 0 && examScore <= 6;
+}
 export {
   validateAndFormatNameSurname,
   nameSurnameRegex,
   openModalWithValidation,
+  examValidation,
+  isExamScoreValid
 };
 

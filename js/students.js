@@ -1,11 +1,12 @@
-import { students } from "./data.js";
-import { promptWithModal, studentCard, deleteItem, addModal } from "./modal.js";
+import { students, exams } from "./data.js";
+import { studentCard, deleteItem, addModal, promptWithModal } from "./modal.js";
 import {
   validateAndFormatNameSurname,
   nameSurnameRegex,
   openModalWithValidation,
+  examValidation,
+  isExamScoreValid,
 } from "./main.js";
-
 function renderStudents() {
   const dynamicContent = document.getElementById("dynamic-content");
   let htmlContent = `<div class="fluid-container-student">`;
@@ -37,11 +38,17 @@ function renderStudents() {
   attachAddStudentButtonListener();
   deleteButon();
 }
-function addNewStudent(name, branch, average_grade) {
-  const newStudent = { name, branch, average_grade };
+function addNewStudent(name, branch, exam1, exam2) {
+  const averageGrade = calculateAverageGrade(exam1, exam2);
+  const newStudent = { name, branch, average_grade: averageGrade };
   students[0].details.push(newStudent);
   localStorage.setItem("students", JSON.stringify(students));
-  renderStudents();
+  addModal(
+    "Student Added",
+    `New student ${name} added successfully to the ${branch} branch with an average grade of ${averageGrade}.`,
+    null,
+    renderStudents
+  );
 }
 function attachAddStudentButtonListener() {
   const addStudentButton = document.getElementById("add-student-button");
@@ -56,19 +63,39 @@ function openAddStudentModal() {
       { id: "student-name", label: "Name", type: "text" },
       { id: "student-branch", label: "Branch", type: "text" },
       {
-        id: "student-average-grade",
-        label: "Average Grade",
+        id: "student-exam1",
+        label: "First Exam Score",
         type: "number",
+        min: "0",
+        max: "6",
+        step: "0.1",
+      },
+      {
+        id: "student-exam2",
+        label: "Second Exam Score",
+        type: "number",
+        min: "0",
+        max: "6",
+        step: "0.1",
       },
     ],
-    (name, branch) => {
+    (name, branch, exam1, exam2) => {
       const validatedName = validateAndFormatNameSurname(name, "");
-      if (validatedName && nameSurnameRegex.test(branch)) {
-        addNewStudent(validatedName.name, branch);
+      if (
+        validatedName &&
+        nameSurnameRegex.test(branch) &&
+        isExamScoreValid(exam1) &&
+        isExamScoreValid(exam2)
+      ) {
+        addNewStudent(validatedName.name, branch, exam1, exam2);
       } else {
         const errorMessage = !validatedName
           ? "Name must be in 'John Doe' format and cannot contain numbers."
-          : "Branch must only contain letters and spaces.";
+          : !nameSurnameRegex.test(branch)
+          ? "Branch must only contain letters and spaces."
+          : !isExamScoreValid(exam1) || !isExamScoreValid(exam2)
+          ? "Exam scores must be numbers between 0 and 6."
+          : "";
         addModal("Invalid Input", errorMessage, openAddStudentModal);
       }
     },
@@ -82,12 +109,22 @@ function openAddStudentModal() {
       {
         field: "student-branch",
         regex: nameSurnameRegex,
-        errorMessage: "Branch must only contain letters",
+        errorMessage: "Branch must only contain letters and spaces.",
+      },
+      {
+        field: "student-exam1",
+        ...examValidation,
+      },
+      {
+        field: "student-exam2",
+        ...examValidation,
       },
     ]
   );
 }
-
+function calculateAverageGrade(exam1, exam2) {
+  return (parseFloat(exam1) + parseFloat(exam2)) / 2;
+}
 function deleteButon() {
   document.querySelectorAll(".delete-btn").forEach((button, index) => {
     button.addEventListener("click", function () {

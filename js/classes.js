@@ -1,5 +1,10 @@
 import { teachers, classes } from "./data.js";
 import { addModal, createCard, promptWithModal, deleteItem } from "./modal.js";
+import {
+  validateAndFormatNameSurname,
+  nameSurnameRegex,
+  openModalWithValidation,
+} from "./main.js";
 function renderClasses() {
   const dynamicContent = document.getElementById("dynamic-content");
   dynamicContent.innerHTML = "";
@@ -27,7 +32,7 @@ function renderClasses() {
   htmlContent += `
     <div class="d-flex flex-column align-items-center">
         <button type="button" id="add-class-button" class="btn btn-light btn-lg">
-            <i class="bi bi-plus-circle"></i> Add new ${classes[0].title}
+            <i class="bi bi-plus-circle"></i> Add new Class
         </button>
     </div>
   </div>`;
@@ -82,17 +87,37 @@ function attachAddButtonListener() {
       if (teachers[0].details.length === 0) {
         addModal(
           "No Teacher",
-          `There isn't any teacher available for the class ${className}. Please add teacher first then try again.`,
+          "There isn't any teacher available. Please add a teacher first.",
           null,
           renderClasses
         );
       } else {
-        promptWithModal(
+        openModalWithValidation(
           "Enter New Class Name",
           [{ id: "class-name", label: "Class Name", type: "text" }],
           (className) => {
-            addNewClass(className);
-          }
+            const validatedClassName = validateAndFormatNameSurname(
+              className,
+              ""
+            );
+            if (validatedClassName && nameSurnameRegex.test(className)) {
+              addNewClass(validatedClassName.name);
+            } else {
+              const errorMessage =
+                "Class Name must be in 'Math 101' format and cannot contain numbers.";
+              addModal("Invalid Input", errorMessage, () =>
+                attachAddButtonListener()
+              );
+            }
+          },
+          [
+            {
+              field: "class-name",
+              regex: nameSurnameRegex,
+              errorMessage:
+                "Class Name cannot contain numbers.",
+            },
+          ]
         );
       }
     };
