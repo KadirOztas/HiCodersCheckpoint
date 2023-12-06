@@ -104,7 +104,7 @@ function attachAddButtonListener() {
               addNewClass(validatedClassName.name);
             } else {
               const errorMessage =
-                "Class Name must be in 'Math 101' format and cannot contain numbers.";
+                "Class Name must be in 'Math' format and cannot contain numbers.";
               addModal("Invalid Input", errorMessage, () =>
                 attachAddButtonListener()
               );
@@ -114,8 +114,7 @@ function attachAddButtonListener() {
             {
               field: "class-name",
               regex: nameSurnameRegex,
-              errorMessage:
-                "Class Name cannot contain numbers.",
+              errorMessage: "Class Name cannot contain numbers.",
             },
           ]
         );

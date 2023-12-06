@@ -1,5 +1,4 @@
 import { addModal, promptWithModal } from "./modal.js";
-
 const nameSurnameRegex = /^[A-Za-z\s]+$/;
 const examValidation = {
   regex: /^[0-6](?:\.[0-9])?$/,
@@ -26,7 +25,6 @@ function validateAndFormatNameSurname(name, surname) {
     return { name: formatName(name), surname: formatName(surname) };
   }
 }
-
 function openModalWithValidation(
   title,
   fields,
@@ -67,6 +65,5 @@ export {
   nameSurnameRegex,
   openModalWithValidation,
   examValidation,
-  isExamScoreValid
+  isExamScoreValid,
 };
-

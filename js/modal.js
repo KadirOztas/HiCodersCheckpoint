@@ -38,7 +38,6 @@ function addModal(title, body, callbackOnConfirm, callbackOnClose) {
       callbackOnClose();
     }
   });
-
   modalInstance.show();
 }
 function createCard(title, subtitle, link1, link2, index) {
@@ -58,25 +57,6 @@ function createCard(title, subtitle, link1, link2, index) {
           <p class="card-text">${commonText}</p>
           ${link1}
           ${link2}
-        </div>
-      </div>`;
-}
-function studentCard(title, subtitle, averageGradeText, index) {
-  const commonText =
-    "Some quick example text to build on the card title and make up the bulk of the card's content.";
-  return `
-      <div class="card col-xl-5 m-2" style="width: 18rem;">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center">
-            <h5 class="card-title">${title}</h5>
-            <div>
-              <button class="edit-btn btn-sm" data-index="${index}">✏️</button>
-              <button class="delete-btn btn-sm" data-index="${index}">🗑️</button>
-            </div>
-          </div>
-          <h6 class="card-subtitle mb-2 text-muted">${subtitle}</h6>
-          <p class="card-text">${commonText}</p>
-          ${averageGradeText}
         </div>
       </div>`;
 }
@@ -109,4 +89,4 @@ function deleteItem(index, detailsArray, renderFunction, storageKey) {
   localStorage.setItem(storageKey, JSON.stringify(detailsArray));
   renderFunction();
 }
-export { addModal, promptWithModal, createCard, deleteItem, studentCard };
+export { addModal, promptWithModal, createCard, deleteItem };

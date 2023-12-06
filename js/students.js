@@ -1,5 +1,5 @@
-import { students, exams } from "./data.js";
-import { studentCard, deleteItem, addModal, promptWithModal } from "./modal.js";
+import { students } from "./data.js";
+import { createCard, deleteItem, addModal, promptWithModal } from "./modal.js";
 import {
   validateAndFormatNameSurname,
   nameSurnameRegex,
@@ -19,12 +19,14 @@ function renderStudents() {
   `;
   htmlContent += studentsHeader;
   htmlContent += `<div class="row px-5 d-flex justify-content-center align-items-center">`;
-  students[0].details.forEach((student, index) => {
-    htmlContent += studentCard(
+  students[0].details.forEach((student) => {
+    const averageGrade = calculateAverageGrade(student.exam_1, student.exam_2);
+    const averageGradeText = `Average Grade: ${averageGrade}`;
+    htmlContent += createCard(
       student.name,
-      `${student.branch}`,
-      `<p class="card-text">Average Grade: ${student.average_grade}</p>`,
-      index
+      student.branch,
+      averageGradeText,
+      ""
     );
   });
   htmlContent += `</div>
@@ -39,13 +41,19 @@ function renderStudents() {
   deleteButon();
 }
 function addNewStudent(name, branch, exam1, exam2) {
-  const averageGrade = calculateAverageGrade(exam1, exam2);
-  const newStudent = { name, branch, average_grade: averageGrade };
+  const score1 = parseFloat(exam1);
+  const score2 = parseFloat(exam2);
+  const newStudent = {
+    name,
+    branch,
+    exam_1: score1,
+    exam_2: score2,
+  };
   students[0].details.push(newStudent);
   localStorage.setItem("students", JSON.stringify(students));
   addModal(
     "Student Added",
-    `New student ${name} added successfully to the ${branch} branch with an average grade of ${averageGrade}.`,
+    `New student ${name} added successfully to the ${branch} branch with.`,
     null,
     renderStudents
   );
@@ -123,7 +131,8 @@ function openAddStudentModal() {
   );
 }
 function calculateAverageGrade(exam1, exam2) {
-  return (parseFloat(exam1) + parseFloat(exam2)) / 2;
+  const average= (parseFloat(exam1) + parseFloat(exam2)) / 2;
+  return average.toFixed(1)
 }
 function deleteButon() {
   document.querySelectorAll(".delete-btn").forEach((button, index) => {
