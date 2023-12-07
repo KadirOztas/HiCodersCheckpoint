@@ -26,7 +26,7 @@ function renderTeachers() {
   });
   htmlContent += `</div></div>`;
   htmlContent += `
-    <div class="d-flex flex-column align-items-center">
+    <div class="d-flex flex-column align-items-center mb-5 mt-5">
       <button type="button" id="add-teacher-button" class="btn btn-light btn-lg">
         <i class="bi bi-plus-circle"></i> Add new Teacher
       </button>
@@ -79,13 +79,15 @@ function openAddTeacherModal() {
     ],
     (name, expertise) => {
       const validatedName = validateAndFormatNameSurname(name, "");
-      if (validatedName && nameSurnameRegex.test(expertise)) {
-        addNewTeacher(validatedName.name, expertise);
+      const validatedExpertise = validateAndFormatNameSurname(expertise, "");
+
+      if (validatedName && validatedExpertise) {
+        addNewTeacher(validatedName.name, validatedExpertise.name);
       } else {
-        const errorMessage = !validatedName
+        const nameErrorMessage = !validatedName
           ? "Name must be in 'John Doe' format and cannot contain numbers."
-          : "Expertise must only contain letters and spaces.";
-        addModal("Invalid Input", errorMessage, openAddTeacherModal);
+          : "Expertise must be in 'Expert' format and cannot contain numbers.";
+        addModal("Invalid Input", nameErrorMessage, openAddTeacherModal);
       }
     },
     [
@@ -98,11 +100,13 @@ function openAddTeacherModal() {
       {
         field: "teacher-expertise",
         regex: nameSurnameRegex,
-        errorMessage: "Expertise must only contain letters",
+        errorMessage:
+          "Expertise must be in 'Expert' format and cannot contain numbers.",
       },
     ]
   );
 }
+
 function attachAddTeacherButtonListener() {
   const addTeacherButton = document.getElementById("add-teacher-button");
   if (addTeacherButton) {
@@ -135,4 +139,5 @@ document.addEventListener("DOMContentLoaded", () => {
   attachLinkEventListeners();
   attachAddTeacherButtonListener();
 });
+
 export { renderTeachers };

@@ -30,7 +30,7 @@ function renderStudents() {
     );
   });
   htmlContent += `</div>
-    <div class="d-flex flex-column align-items-center">
+    <div class="d-flex flex-column align-items-center mb-5 mt-5">
       <button type="button" id="add-student-button" class="btn btn-light btn-lg">
         <i class="bi bi-plus-circle"></i> Add new Student
       </button>
@@ -88,24 +88,22 @@ function openAddStudentModal() {
       },
     ],
     (name, branch, exam1, exam2) => {
-      const validatedName = validateAndFormatNameSurname(name, "");
-      if (
-        validatedName &&
-        nameSurnameRegex.test(branch) &&
-        isExamScoreValid(exam1) &&
-        isExamScoreValid(exam2)
-      ) {
-        addNewStudent(validatedName.name, branch, exam1, exam2);
-      } else {
-        const errorMessage = !validatedName
-          ? "Name must be in 'John Doe' format and cannot contain numbers."
-          : !nameSurnameRegex.test(branch)
-          ? "Branch must only contain letters and spaces."
-          : !isExamScoreValid(exam1) || !isExamScoreValid(exam2)
-          ? "Exam scores must be numbers between 0 and 6."
-          : "";
-        addModal("Invalid Input", errorMessage, openAddStudentModal);
-      }
+       const validatedName = validateAndFormatNameSurname(name, "");
+       const validatedBranch = validateAndFormatNameSurname(branch, "");
+       if (
+         validatedName &&
+         validatedBranch &&
+         isExamScoreValid(exam1) &&
+         isExamScoreValid(exam2)
+       ) {
+         addNewStudent(validatedName.name, validatedBranch.name, exam1, exam2);
+       } else {
+         addModal(
+           "Invalid Input",
+           "Please check your input. Make sure the name is correctly formatted and the exam scores are valid.",
+           openAddStudentModal
+         );
+       }
     },
     [
       {
@@ -121,11 +119,13 @@ function openAddStudentModal() {
       },
       {
         field: "student-exam1",
-        ...examValidation,
+        regex: examValidation.regex,
+        errorMessage: examValidation.errorMessage,
       },
       {
         field: "student-exam2",
-        ...examValidation,
+        regex: examValidation.regex,
+        errorMessage: examValidation.errorMessage,
       },
     ]
   );

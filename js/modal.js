@@ -48,9 +48,9 @@ function createCard(title, subtitle, link1, link2, index) {
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center">
             <h5 class="card-title">${title}</h5>
-            <div>
-              <button class="edit-btn btn-sm" data-index="${index}">✏️</button>
-              <button class="delete-btn btn-sm" data-index="${index}">🗑️</button>
+            <div class="ms-auto">
+              <button class="edit-btn btn-sm" data-index="${index}"><i class="fas fa-pencil-alt" style="font-size: 6px;"></i></button>
+              <button class="delete-btn btn-sm" data-index="${index}"><i class="fas fa-trash-alt" style="font-size: 6px;"></i></button>
             </div>
           </div>
           <h6 class="card-subtitle mb-2 text-muted">${subtitle}</h6>

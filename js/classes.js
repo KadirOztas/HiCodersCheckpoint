@@ -30,7 +30,7 @@ function renderClasses() {
   });
   htmlContent += `</div>`;
   htmlContent += `
-    <div class="d-flex flex-column align-items-center">
+    <div class="d-flex flex-column align-items-center mb-5 mt-5">
         <button type="button" id="add-class-button" class="btn btn-light btn-lg">
             <i class="bi bi-plus-circle"></i> Add new Class
         </button>
