@@ -1,40 +1,63 @@
-import { students } from "./students.js";
-import { teachers } from "./teachers.js";
-import { classes } from "./classes.js";
-
+import { teachers, classes, students } from "./data.js";
+import { promptWithModal, addModal } from "./modal.js";
+import { validateAndFormatNameSurname } from "./main.js";
+function askUserName() {
+  promptWithModal(
+    "Enter Your Name",
+    [{ id: "user-name", label: "Name", type: "text" }],
+    (userName) => {
+      const validatedName = validateAndFormatNameSurname(userName, "");
+      if (validatedName) {
+        localStorage.setItem("userName", validatedName.name);
+        renderHome();
+      } else {
+        addModal(
+          "Invalid Input",
+          "Name must be in 'John Doe' format and cannot contain numbers.",
+          askUserName
+        );
+      }
+    }
+  );
+}
 function renderHome() {
+  const userName = localStorage.getItem("userName") || "Guest";
   const dynamicContent = document.getElementById("dynamic-content");
+  if (!dynamicContent) return;
+
+  const welcomeMessageElement = document.getElementById("welcome-message");
+  if (welcomeMessageElement) {
+    if (userName !== "Guest") {
+      welcomeMessageElement.innerText = `Welcome, ${userName}`;
+    } else {
+      welcomeMessageElement.innerText = "";
+    }
+  }
   dynamicContent.innerHTML = `
-    <div class="container">
-      <h2>Welcome Mirjam</h2>
-      <div class="row">
-        <div class="col">
-          <div class="card">
-            <div class="card-body">
-              <h3>${students[0].details.length}</h3>
-              <p>number of students</p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <div class="card-body">
-              <h3>${teachers[0].details.length}</h3>
-              <p>number of teachers</p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <div class="card-body">
-              <h3>${classes[0].details.length}</h3>
-              <p>number of classes</p>
-            </div>
-          </div>
+    <div class="main-container mt-5 mb-4 mx-5">
+      <div class="name-text pb-5">
+        <h2 id="welcome-message">Welcome, ${userName}</h2>
+      </div>
+      <div class="container my-5">
+        <div class="row justify-content-center">
+          <div class="col-md-4"><div class="card text-center"><div class="card-body"><h3>${students[0].details.length}</h3><p>number of students</p></div></div></div>
+          <div class="col-md-4"><div class="card text-center"><div class="card-body"><h3>${teachers[0].details.length}</h3><p>number of teachers</p></div></div></div>
+          <div class="col-md-4"><div class="card text-center"><div class="card-body"><h3>${classes[0].details.length}</h3><p>number of classes</p></div></div></div>
         </div>
       </div>
     </div>
   `;
+  if (userName === "Guest") {
+    dynamicContent.style.display = "none";
+  } else {
+    dynamicContent.style.display = "block";
+  }
 }
-
+document.addEventListener("DOMContentLoaded", () => {
+  if (!localStorage.getItem("userName")) {
+    askUserName();
+  } else {
+    renderHome();
+  }
+});
 export { renderHome };
