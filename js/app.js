@@ -1,27 +1,39 @@
-const school = [
-  {
-    id: 1,
-    title: "teachers",
-    details: [
-      { name: "Hannes Bühler", expertise: "Javascript" },
-      { name: "Ali Sayar", expertise: "AWS" },
-    ],
-  },
-  {
-    id: 2,
-    title: "students",
-    details: [
-      { name: "Max Hermann", branch: "Fullstack", average_grade: 5.4 },
-      { name: "Anthony Egbe", branch: "Cloud", average_grade: 4.9 },
-    ],
-  },
-  {
-    id: 3,
-    title: "classes",
-    details: [{ class: "Fullstack" }, { class: "Cloud" }],
-  },
-];
-// I need to make a commit about id situation too.
-
 import { renderNav } from "./nav.js";
+import { renderStudents } from "./students.js";
+import { renderTeachers } from "./teachers.js";
+import { renderClasses } from "./classes.js";
+import { renderHome } from "./home.js";
 import { renderFooter } from "./footer.js";
+
+renderNav();
+renderFooter();
+window.renderStudents = renderStudents;
+window.renderStudents = renderStudents;
+window.renderTeachers = renderTeachers;
+window.renderClasses = renderClasses;
+window.renderHome = renderHome;
+
+const navClickListeners = () => {
+  document.getElementById("home-link").addEventListener("click", (event) => {
+    event.preventDefault();
+    window.renderHome();
+  });
+  document
+    .getElementById("students-page")
+    .addEventListener("click", (event) => {
+      event.preventDefault();
+      renderStudents();
+    });
+  document
+    .getElementById("teachers-page")
+    .addEventListener("click", (event) => {
+      event.preventDefault();
+      renderTeachers();
+    });
+  document.getElementById("classes-link").addEventListener("click", (event) => {
+    event.preventDefault();
+    renderClasses();
+  });
+};
+
+document.addEventListener("DOMContentLoaded", navClickListeners);
