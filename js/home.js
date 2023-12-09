@@ -1,13 +1,21 @@
 import { teachers, classes, students } from "./data.js";
-import { promptWithModal } from "./modal.js";
+import { promptWithModal, addModal } from "./modal.js";
+import { validateAndFormatNameSurname } from "./main.js";
 function askUserName() {
   promptWithModal(
     "Enter Your Name",
     [{ id: "user-name", label: "Name", type: "text" }],
     (userName) => {
-      if (userName) {
-        localStorage.setItem("userName", userName);
+      const validatedName = validateAndFormatNameSurname(userName, "");
+      if (validatedName) {
+        localStorage.setItem("userName", validatedName.name);
         renderHome();
+      } else {
+        addModal(
+          "Invalid Input",
+          "Name must be in 'John Doe' format and cannot contain numbers.",
+          askUserName
+        );
       }
     }
   );
@@ -40,9 +48,9 @@ function renderHome() {
     </div>
   `;
   if (userName === "Guest") {
-    dynamicContent.style.display = 'none';
+    dynamicContent.style.display = "none";
   } else {
-    dynamicContent.style.display = 'block';
+    dynamicContent.style.display = "block";
   }
 }
 document.addEventListener("DOMContentLoaded", () => {

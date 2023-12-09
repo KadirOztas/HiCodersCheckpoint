@@ -139,5 +139,4 @@ document.addEventListener("DOMContentLoaded", () => {
   attachLinkEventListeners();
   attachAddTeacherButtonListener();
 });
-
 export { renderTeachers };

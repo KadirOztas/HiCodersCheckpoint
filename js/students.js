@@ -8,7 +8,12 @@ import {
   isExamScoreValid,
 } from "./main.js";
 function renderStudents() {
-  const dynamicContent = document.getElementById("dynamic-content");
+  let dynamicContent = document.getElementById("dynamic-content");
+  if (!dynamicContent) {
+    dynamicContent = document.createElement("div");
+    dynamicContent.id = "dynamic-content";
+    document.body.appendChild(dynamicContent);
+  }
   let htmlContent = `<div class="fluid-container-student">`;
   const studentsHeader = `
     <div class="row m-4">
@@ -40,6 +45,9 @@ function renderStudents() {
   attachAddStudentButtonListener();
   deleteButon();
 }
+document.addEventListener("DOMContentLoaded", () => {
+  renderStudents();
+});
 function addNewStudent(name, branch, exam1, exam2) {
   const score1 = parseFloat(exam1);
   const score2 = parseFloat(exam2);
@@ -88,22 +96,22 @@ function openAddStudentModal() {
       },
     ],
     (name, branch, exam1, exam2) => {
-       const validatedName = validateAndFormatNameSurname(name, "");
-       const validatedBranch = validateAndFormatNameSurname(branch, "");
-       if (
-         validatedName &&
-         validatedBranch &&
-         isExamScoreValid(exam1) &&
-         isExamScoreValid(exam2)
-       ) {
-         addNewStudent(validatedName.name, validatedBranch.name, exam1, exam2);
-       } else {
-         addModal(
-           "Invalid Input",
-           "Please check your input. Make sure the name is correctly formatted and the exam scores are valid.",
-           openAddStudentModal
-         );
-       }
+      const validatedName = validateAndFormatNameSurname(name, "");
+      const validatedBranch = validateAndFormatNameSurname(branch, "");
+      if (
+        validatedName &&
+        validatedBranch &&
+        isExamScoreValid(exam1) &&
+        isExamScoreValid(exam2)
+      ) {
+        addNewStudent(validatedName.name, validatedBranch.name, exam1, exam2);
+      } else {
+        addModal(
+          "Invalid Input",
+          "Please check your input. Make sure the name is correctly formatted and the exam scores are valid.",
+          openAddStudentModal
+        );
+      }
     },
     [
       {
@@ -131,8 +139,8 @@ function openAddStudentModal() {
   );
 }
 function calculateAverageGrade(exam1, exam2) {
-  const average= (parseFloat(exam1) + parseFloat(exam2)) / 2;
-  return average.toFixed(1)
+  const average = (parseFloat(exam1) + parseFloat(exam2)) / 2;
+  return average.toFixed(1);
 }
 function deleteButon() {
   document.querySelectorAll(".delete-btn").forEach((button, index) => {

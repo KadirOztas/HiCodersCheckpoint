@@ -65,5 +65,5 @@ export {
   nameSurnameRegex,
   openModalWithValidation,
   examValidation,
-  isExamScoreValid
+  isExamScoreValid,
 };
